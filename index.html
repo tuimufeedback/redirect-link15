@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Long Press URL</title>
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        padding: 40px 18px;
+        text-align: center;
+        background: #ffffff;
+    }
+
+    h2 {
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    #urlButton {
+        margin: 40px auto;
+        padding: 22px 20px;
+        width: 88%;
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+        background: #ff5722;
+        border-radius: 18px;
+        user-select: text;
+        line-height: 32px;
+        word-break: break-all;
+        transition: 0.15s;
+    }
+
+    #urlButton:active {
+        opacity: 0.7;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+    }
+
+    .pulse {
+        animation: pulse 0.6s ease-in-out 2;
+    }
+
+    #hint {
+        font-size: 17px;
+        font-weight: 600;
+        margin-top: 12px;
+        color: #ff5722;
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Nhấn giữ vào nút để chọn URL</h2>
+
+<div id="urlButton">https://beacons.ai/tuimufeedback</div>
+
+<div id="hint">👉 Nhả tay ra rồi chạm 1 lần nếu popup chưa hiện!</div>
+
+<script>
+const urlBtn = document.getElementById("urlButton");
+const hint = document.getElementById("hint");
+
+let pressTimer = null;
+
+urlBtn.addEventListener("touchstart", () => {
+    pressTimer = setTimeout(() => {
+        let range = document.createRange();
+        range.selectNodeContents(urlBtn);
+
+        let sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        urlBtn.classList.add("pulse");
+        setTimeout(() => urlBtn.classList.remove("pulse"), 700);
+
+        hint.style.display = "block";
+
+        urlBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 900);
+});
+
+urlBtn.addEventListener("touchend", () => {
+    clearTimeout(pressTimer);
+});
+</script>
+
+</body>
+</html>
