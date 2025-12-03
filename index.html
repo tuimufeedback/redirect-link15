@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Long Press URL</title>
+<title>Long Press URL FIXED</title>
 
 <style>
     body {
@@ -34,10 +34,6 @@
         transition: 0.15s;
     }
 
-    #urlButton:active {
-        opacity: 0.7;
-    }
-
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.03); }
@@ -60,11 +56,11 @@
 
 <body>
 
-<h2>Nhấn giữ vào nút để chọn URL</h2>
+<h2>Nhấn giữ để chọn URL</h2>
 
 <div id="urlButton">https://beacons.ai/tuimufeedback</div>
 
-<div id="hint">👉 Nhả tay ra rồi chạm 1 lần nếu popup chưa hiện!</div>
+<div id="hint">👉 Nhả tay rồi chạm 1 lần nếu popup chưa hiện!</div>
 
 <script>
 const urlBtn = document.getElementById("urlButton");
@@ -72,26 +68,31 @@ const hint = document.getElementById("hint");
 
 let pressTimer = null;
 
+function selectText() {
+    let range = document.createRange();
+    range.selectNodeContents(urlBtn);
+    let sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
 urlBtn.addEventListener("touchstart", () => {
     pressTimer = setTimeout(() => {
-        let range = document.createRange();
-        range.selectNodeContents(urlBtn);
-
-        let sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-
+        selectText();
         urlBtn.classList.add("pulse");
         setTimeout(() => urlBtn.classList.remove("pulse"), 700);
-
         hint.style.display = "block";
-
         urlBtn.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 900);
 });
 
 urlBtn.addEventListener("touchend", () => {
     clearTimeout(pressTimer);
+
+    // GIỮ TÔ ĐEN KHI NHẢ TAY
+    setTimeout(() => {
+        selectText();
+    }, 30);
 });
 </script>
 
